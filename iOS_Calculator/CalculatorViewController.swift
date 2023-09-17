@@ -37,7 +37,7 @@ class CalculatorViewController: UIViewController {
     let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.spacing = 10
+        stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
     
@@ -69,16 +69,15 @@ class CalculatorViewController: UIViewController {
     
     //MARK: UI Setup
     func setupUI() {
+        view.addSubview(collectionView)
         view.addSubview(stackView)
-        stackView.addArrangedSubview(labelView)
-        stackView.addArrangedSubview(collectionView)
-        labelView.addSubview(resultLabel)
+    
         
         NSLayoutConstraint.activate([
-            self.collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            self.collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            self.collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            self.collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            self.collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
         ])
     }
 }
