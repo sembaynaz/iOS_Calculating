@@ -8,11 +8,11 @@
 import UIKit
 
 class CalculatorViewController: UIViewController {
-    //MARK: Variables
+        //MARK: Variables
     let viewModel: CalculatorViewControllerViewModel
     let headerViewModel: ResulLabelViewModel
     
-    //MARK: UI Components
+        //MARK: UI Components
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -29,24 +29,28 @@ class CalculatorViewController: UIViewController {
         label.text = "123"
         label.textColor = .white
         label.textAlignment = .right
-        label.font = UIFont.systemFont(ofSize: 72, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 72, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     let stackView: UIStackView = {
         let stack = UIStackView()
-        stack.axis = .horizontal
+        stack.axis = .vertical
+        stack.spacing = 20
+        stack.backgroundColor = .black
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
     
     let labelView: UIView = {
         let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .black
         return view
     }()
     
-    //MARK: Lifecycle
+        //MARK: Lifecycle
     init(viewModel: CalculatorViewControllerViewModel = CalculatorViewControllerViewModel(), headerViewModel: ResulLabelViewModel = ResulLabelViewModel()) {
         self.viewModel = viewModel
         self.headerViewModel = headerViewModel
@@ -68,20 +72,38 @@ class CalculatorViewController: UIViewController {
     }
     
     //MARK: UI Setup
+
     func setupUI() {
-        view.addSubview(collectionView)
         view.addSubview(stackView)
-    
+        
+        stackView.addArrangedSubview(labelView)
+        stackView.addArrangedSubview(collectionView)
+        
+        labelView.addSubview(resultLabel)
         
         NSLayoutConstraint.activate([
-            self.collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: view.topAnchor),
+        ])
+        
+        let topInset = max(view.safeAreaInsets.top, UIApplication.shared.statusBarFrame.height)
+        let bottomInset = max(view.safeAreaInsets.bottom, UIApplication.shared.statusBarFrame.height)
+        
+        NSLayoutConstraint.activate([
+            labelView.heightAnchor.constraint(equalToConstant: view.frame.size.height - 40 - view.frame.size.width - topInset - bottomInset),
+            collectionView.topAnchor.constraint(equalTo: labelView.bottomAnchor, constant: 20),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            resultLabel.leadingAnchor.constraint(equalTo: labelView.leadingAnchor),
+            resultLabel.trailingAnchor.constraint(equalTo: labelView.trailingAnchor, constant: -10),
+            resultLabel.bottomAnchor.constraint(equalTo: labelView.bottomAnchor),
         ])
     }
 }
-
+        
 extension CalculatorViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.buttonsArray.count
