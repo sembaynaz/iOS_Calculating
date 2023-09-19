@@ -1,11 +1,6 @@
 # iOS_Calculating
-<img width = "245" height = "500" src = "https://github.com/sembaynaz/iOS_Calculating/assets/96616194/78c2a45b-07cc-4dc6-8fa7-7ad0ca19f1bc">
+<img width = "245" height = "450" src = "https://github.com/sembaynaz/iOS_Calculating/assets/96616194/78c2a45b-07cc-4dc6-8fa7-7ad0ca19f1bc">
 <img width = "245" height = "500" src = "https://github.com/sembaynaz/iOS_Calculating/assets/96616194/aa024ec7-83be-4f54-a04c-5588bcc1bd6a">
-
-
-
-<img width = "245" height = "500" src = "https://github.com/sembaynaz/iOS_Calculating/assets/96616194/f759c012-3ec2-439e-8ab6-b0fa0f810e4e">
-<img width = "245" height = "500" src = "https://github.com/sembaynaz/iOS_Calculating/assets/96616194/14778f57-4170-4d21-b8f1-fa0774529cc3">
 
 
 ### Project Description
