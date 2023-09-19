@@ -1,8 +1,6 @@
 # iOS_Calculating
 <img width = "245" height = "450" src = "https://github.com/sembaynaz/iOS_Calculating/assets/96616194/78c2a45b-07cc-4dc6-8fa7-7ad0ca19f1bc">
 
-The project builds in 14 Pro, Se, 11 and in other devices.
-
 <img width = "245" height = "500" src = "https://github.com/sembaynaz/iOS_Calculating/assets/96616194/aa024ec7-83be-4f54-a04c-5588bcc1bd6a">
 
 ## Project Description
