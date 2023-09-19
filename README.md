@@ -1,7 +1,9 @@
 # iOS_Calculating
 <img width = "245" height = "450" src = "https://github.com/sembaynaz/iOS_Calculating/assets/96616194/78c2a45b-07cc-4dc6-8fa7-7ad0ca19f1bc">
-<img width = "245" height = "500" src = "https://github.com/sembaynaz/iOS_Calculating/assets/96616194/aa024ec7-83be-4f54-a04c-5588bcc1bd6a">
 
+The project builds in 14 Pro, Se, 11 and in other devices.
+
+<img width = "245" height = "500" src = "https://github.com/sembaynaz/iOS_Calculating/assets/96616194/aa024ec7-83be-4f54-a04c-5588bcc1bd6a">
 
 ## Project Description
 The iOS Calculator project is a straightforward calculator app built for iOS using UIKit and in architecture MVVM, with an emphasis on a clean, intuitive interface and reliable functionality. 
@@ -50,7 +52,7 @@ In the CalculatorController we have all UI elements, here we designed the projec
 ## Contribution
 Contributions to this project are highly encouraged! You can contribute in various ways, including:
 
-Code refactoring and organization.
+Code refactoring and organization. Add a number formatter (e) when count of the numbers bigger than 8.
 Adding new features or improving existing ones.
 Enhancing the user interface for a more visually appealing design.
 Testing and error handling to ensure the app's robustness.
