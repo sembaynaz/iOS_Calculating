@@ -12,46 +12,67 @@ class ButtonCollectionViewCell: UICollectionViewCell {
     static let identifier = "ButtonCell"
     
     // MARK: - UI Components
-    var calculatorButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 40)
-        return button
+    var calculatorButton: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 40)
+        return label
+    }()
+    
+    var buttonView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     // MARK: - Configure
     func configure (button: Buttons) {
-        calculatorButton.setTitle(button.title, for: .normal)
-        calculatorButton.backgroundColor = button.color
+        calculatorButton.text = button.title
+        buttonView.backgroundColor = button.color
         switch button {
         case .allClear, .plusMinus, .percentage:
-            calculatorButton.setTitleColor(.black, for: .normal)
+            calculatorButton.textColor = .black
         default:
-            calculatorButton.setTitleColor(.white, for: .normal)
+            calculatorButton.textColor = .white
         }
-        
         setupUI()
     }
     
+    public func setOperationSelected() {
+        calculatorButton.textColor = .systemOrange
+        buttonView.backgroundColor = .white
+    }
     // MARK: - UI Setup
-    
     func setupUI() {
-        addSubview(calculatorButton)
+        addSubview(buttonView)
+        buttonView.addSubview(calculatorButton)
+        
         switch calculatorButton {
-        case let calculatorButton where calculatorButton.titleLabel?.text == "0":
-            calculatorButton.layer.cornerRadius = 36
-            calculatorButton.contentHorizontalAlignment = .left
-            calculatorButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: frame.height/3, bottom: 0, right: 0)
+        case let calculatorButton where calculatorButton.text == "0":
+            buttonView.layer.cornerRadius = 36
+            NSLayoutConstraint.activate([
+                calculatorButton.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
+                calculatorButton.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: frame.height/3)
+            ])
         default:
-            calculatorButton.contentHorizontalAlignment = .center
-            calculatorButton.layer.cornerRadius = self.frame.size.width/2
+            buttonView.layer.cornerRadius = frame.size.width/2
+            
+            NSLayoutConstraint.activate([
+                calculatorButton.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
+                calculatorButton.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor)
+            ])
         }
         
         NSLayoutConstraint.activate([
-            self.calculatorButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.calculatorButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            self.calculatorButton.heightAnchor.constraint(equalTo: self.heightAnchor),
-            self.calculatorButton.widthAnchor.constraint(equalTo: self.widthAnchor),
+           buttonView.centerXAnchor.constraint(equalTo: centerXAnchor),
+           buttonView.centerYAnchor.constraint(equalTo: centerYAnchor),
+           buttonView.heightAnchor.constraint(equalTo: heightAnchor),
+           buttonView.widthAnchor.constraint(equalTo: widthAnchor),
         ])
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.calculatorButton.removeFromSuperview()
     }
 }

@@ -8,11 +8,10 @@
 import UIKit
 
 class CalculatorViewController: UIViewController {
-        //MARK: Variables
+    //MARK: Variables
     let viewModel: CalculatorViewControllerViewModel
-    let headerViewModel: ResulLabelViewModel
-    
-        //MARK: UI Components
+
+    //MARK: UI Components
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -24,9 +23,8 @@ class CalculatorViewController: UIViewController {
         return collectionView
     }()
     
-    let resultLabel: UILabel = {
+    var resultLabel: UILabel = {
         let label = UILabel()
-        label.text = "123"
         label.textColor = .white
         label.textAlignment = .right
         label.font = UIFont.systemFont(ofSize: 72, weight: .light)
@@ -50,11 +48,13 @@ class CalculatorViewController: UIViewController {
         return view
     }()
     
-        //MARK: Lifecycle
-    init(viewModel: CalculatorViewControllerViewModel = CalculatorViewControllerViewModel(), headerViewModel: ResulLabelViewModel = ResulLabelViewModel()) {
+    //MARK: Lifecycle
+    init(_ viewModel: CalculatorViewControllerViewModel = CalculatorViewControllerViewModel()) {
         self.viewModel = viewModel
-        self.headerViewModel = headerViewModel
         super.init(nibName: nil, bundle: nil)
+        
+        collectionView.dataSource = self
+        collectionView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -65,10 +65,14 @@ class CalculatorViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        
         setupUI()
+        
+        self.viewModel.updateViews = { [weak self] in
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reloadData()
+                self?.resultLabel.text = self!.viewModel.resultLabel
+            }
+        }
     }
     
     //MARK: UI Setup
@@ -115,6 +119,13 @@ extension CalculatorViewController: UICollectionViewDelegate, UICollectionViewDa
             for: indexPath) as! ButtonCollectionViewCell
         let calcButton = self.viewModel.buttonsArray[indexPath.row]
         cell.configure(button: calcButton)
+        
+        if let operation = self.viewModel.operation, self.viewModel.secondNumber == nil {
+            if operation.title == calcButton.title {
+                cell.setOperationSelected()
+            }
+        }
+        
         return cell
     }
     
@@ -142,7 +153,7 @@ extension CalculatorViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let buttonCell = viewModel.buttonsArray[indexPath.row]
-        print(buttonCell.title)
+        let buttonCell = self.viewModel.buttonsArray[indexPath.row]
+        viewModel.didSelectButton(calcButton: buttonCell)
     }
 }

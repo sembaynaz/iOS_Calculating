@@ -64,7 +64,6 @@ extension Buttons {
         switch self {
         case .allClear, .plusMinus, .percentage, .equal, .numbers, .decimal:
             return nil
-            
         case .divide, .multiply, .minus, .plus:
             return .white
         }
