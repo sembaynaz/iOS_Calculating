@@ -3,14 +3,14 @@
 <img width = "245" height = "500" src = "https://github.com/sembaynaz/iOS_Calculating/assets/96616194/aa024ec7-83be-4f54-a04c-5588bcc1bd6a">
 
 
-### Project Description
+## Project Description
 The iOS Calculator project is a straightforward calculator app built for iOS using UIKit and in architecture MVVM, with an emphasis on a clean, intuitive interface and reliable functionality. 
 This application allows users to perform basic arithmetic calculations, including addition, subtraction, multiplication, and division, as well as other operations such as percentage calculations and toggling between 
 positive and negative numbers. It will be good practice to try use MVVM. 
 
 The project builds in 14 Pro, Se, 11 and in other devices.
 
-### Installation
+## Installation
 No additional libraries or dependencies are required to run this project. To get started, follow these simple installation steps:
 
 Clone or download the project from GitHub.
@@ -18,7 +18,7 @@ Open the project in Xcode.
 Build and run the app on your preferred iOS device or simulator.
 
 
-### Usage
+## Usage
 Upon launching the app, you'll be greeted with a user-friendly calculator interface that includes the following key features:
 
 **Calculator Modes**
@@ -47,7 +47,7 @@ I add the buttons in collectionView. Collection View contains view and label. Bu
 IIn the file CalculatorViewControllerViewModel we can see all logic of the calculator (functions of every button and func which updates view). 
 In the CalculatorController we have all UI elements, here we designed the project: add collectionView, result Label and set them.
 
-### Contribution
+## Contribution
 Contributions to this project are highly encouraged! You can contribute in various ways, including:
 
 Code refactoring and organization.
@@ -57,7 +57,7 @@ Testing and error handling to ensure the app's robustness.
 Feel free to reach out to the project's author for collaboration or questions:
 
 
-### Author
+## Author
 git: sembaynaz
 
 mail: nazerke.sembay11@gmail.com 
