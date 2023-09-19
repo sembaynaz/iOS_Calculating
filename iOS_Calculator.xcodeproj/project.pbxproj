@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		6F689C202AB70FF9000D25CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F689C1F2AB70FF9000D25CD /* AppDelegate.swift */; };
 		6F689C222AB70FF9000D25CD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F689C212AB70FF9000D25CD /* SceneDelegate.swift */; };
-		6F689C242AB70FF9000D25CD /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F689C232AB70FF9000D25CD /* CalculatorViewController.swift */; };
+		6F689C242AB70FF9000D25CD /* CalculatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F689C232AB70FF9000D25CD /* CalculatorController.swift */; };
 		6F689C292AB70FFB000D25CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F689C282AB70FFB000D25CD /* Assets.xcassets */; };
 		6F689C2C2AB70FFB000D25CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F689C2A2AB70FFB000D25CD /* LaunchScreen.storyboard */; };
 		6F689C382AB732FC000D25CD /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F689C372AB732FC000D25CD /* Buttons.swift */; };
@@ -22,7 +22,7 @@
 		6F689C1C2AB70FF9000D25CD /* iOS_Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F689C1F2AB70FF9000D25CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6F689C212AB70FF9000D25CD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		6F689C232AB70FF9000D25CD /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
+		6F689C232AB70FF9000D25CD /* CalculatorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorController.swift; sourceTree = "<group>"; };
 		6F689C282AB70FFB000D25CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6F689C2B2AB70FFB000D25CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6F689C2D2AB70FFB000D25CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -62,7 +62,7 @@
 		6F689C1E2AB70FF9000D25CD /* iOS_Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				6F689C232AB70FF9000D25CD /* CalculatorViewController.swift */,
+				6F689C232AB70FF9000D25CD /* CalculatorController.swift */,
 				6F689C392AB74BCF000D25CD /* CalculatorViewControllerViewModel.swift */,
 				6F689C362AB71369000D25CD /* Models */,
 				6F689C342AB71359000D25CD /* Views */,
@@ -171,7 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FEEE5592AB9DF1E002D09D9 /* CalculatorOperations.swift in Sources */,
-				6F689C242AB70FF9000D25CD /* CalculatorViewController.swift in Sources */,
+				6F689C242AB70FF9000D25CD /* CalculatorController.swift in Sources */,
 				6F689C202AB70FF9000D25CD /* AppDelegate.swift in Sources */,
 				6F689C222AB70FF9000D25CD /* SceneDelegate.swift in Sources */,
 				6F689C382AB732FC000D25CD /* Buttons.swift in Sources */,

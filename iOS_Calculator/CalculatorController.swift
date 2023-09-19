@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CalculatorViewController: UIViewController {
+class CalculatorController: UIViewController {
     //MARK: Variables
     let viewModel: CalculatorViewControllerViewModel
 
@@ -108,7 +108,7 @@ class CalculatorViewController: UIViewController {
     }
 }
         
-extension CalculatorViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension CalculatorController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.buttonsArray.count
     }

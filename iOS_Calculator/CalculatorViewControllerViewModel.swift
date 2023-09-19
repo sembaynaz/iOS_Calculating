@@ -128,16 +128,21 @@ extension CalculatorViewControllerViewModel {
     }
     
     private func getOperationResult(_ operation: CalculatorOperation, _ firstNumber: Double, _ secondNumber: Double) -> Double {
+        
+        let result: Double
+        
         switch operation {
         case .divide:
-            return (firstNumber / secondNumber)
+            result = firstNumber / secondNumber
         case .multiply:
-            return (firstNumber * secondNumber)
+            result = firstNumber * secondNumber
         case .minus:
-            return (firstNumber - secondNumber)
+            result = firstNumber - secondNumber
         case .plus:
-            return (firstNumber + secondNumber)
+            result = firstNumber + secondNumber
         }
+        
+        return result
     }
     
     private func didSelectAllClear() {
@@ -243,5 +248,14 @@ extension CalculatorViewControllerViewModel {
             }
         }
     }
-
+    
+    private func formatNumberToScientificNotation(_ numberString: String) -> String {
+        if let number = Double(numberString) {
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .scientific
+            numberFormatter.positiveFormat = "0.###E+0"
+            return numberFormatter.string(from: NSNumber(value: number)) ?? numberString
+        }
+        return numberString
+    }
 }
