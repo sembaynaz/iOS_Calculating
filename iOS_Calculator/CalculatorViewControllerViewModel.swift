@@ -5,7 +5,7 @@
 //  Created by Nazerke Sembay on 17.09.2023.
 //
 
-import UIKit
+import Foundation
 
 enum CurrentNumber {
     case firstNumber
@@ -13,9 +13,10 @@ enum CurrentNumber {
 }
 
 class CalculatorViewControllerViewModel {
+    
     var updateViews: (()->Void)?
     
-    let buttonsArray: [Buttons] = [
+    let calcButtonCells: [Buttons] = [
         .allClear, .plusMinus, .percentage, .divide,
         .numbers(7), .numbers(8), .numbers(9), .multiply,
         .numbers(4), .numbers(5), .numbers(6), .minus,
@@ -23,171 +24,168 @@ class CalculatorViewControllerViewModel {
         .numbers(0), .decimal, .equal
     ]
     
-    // MARK: Normal Variables
-    lazy var resultLabel: String = firstNumber?.description ?? "0"
+    // MARK: - Normal Variables
+    private(set) lazy var calcHeaderLabel: String = self.firstNumber ?? "0"
+    private(set) var currentNumber: CurrentNumber = .firstNumber
     
-    var firstNumber: String? = nil {
-        didSet {
-            resultLabel = firstNumber?.description ?? "0"
-        }
-    }
-    var secondNumber: String? = nil {
-        didSet {
-            resultLabel = secondNumber?.description ?? "0"
-        }
-    }
+    private(set) var firstNumber: String? = nil { didSet { self.calcHeaderLabel = self.firstNumber?.description ?? "0" } }
+    private(set) var secondNumber: String? = nil { didSet { self.calcHeaderLabel = self.secondNumber?.description ?? "0" } }
     
-    var firstNumberIsDecimal: Bool = false
-    var secondNumberIsDecimal: Bool = false
+    private(set) var operation: CalculatorOperation? = nil
+    
+    private(set) var firstNumberIsDecimal: Bool = false
+    private(set) var secondNumberIsDecimal: Bool = false
     
     var eitherNumberIsDecimal: Bool {
         return firstNumberIsDecimal || secondNumberIsDecimal
     }
     
-    var operation: CalculatorOperation? = nil
-    var currentNumber: CurrentNumber = .firstNumber
-    
-    //MARK: Memory Variables
-    var previousResult: String? = nil
-    var previousOperation: CalculatorOperation? = nil
+    // MARK: - Memory Variables
+    private(set) var prevNumber: String? = nil
+    private(set) var prevOperation: CalculatorOperation? = nil
 }
-
 
 extension CalculatorViewControllerViewModel {
     
-    public func didSelectButton(calcButton: Buttons) {
+    public func didSelectButton(with calcButton: Buttons) {
+        
         switch calcButton {
-        case .allClear: didSelectAllClear()
-        case .plusMinus: didSelectPlusMinus()
-        case .percentage: didSelectPercentage()
-        case .divide: didSelectOperation(operation: .divide)
-        case .multiply: didSelectOperation(operation: .multiply)
-        case .minus: didSelectOperation(operation: .minus)
-        case .plus: didSelectOperation(operation: .plus)
-        case .equal: didSelectEqualsButton()
-        case .numbers(let number): didSelectNumber(number: number)
-        case .decimal: didSelectDecimal()
+        case .allClear: self.didSelectAllClear()
+        case .plusMinus: self.didSelectPlusOrMinus()
+        case .percentage: self.didSelectPercentage()
+        case .divide: self.didSelectOperation(with: .divide)
+        case .multiply: self.didSelectOperation(with: .multiply)
+        case .minus: self.didSelectOperation(with: .minus)
+        case .plus: self.didSelectOperation(with: .plus)
+        case .equal: self.didSelectEqualsButton()
+        case .numbers(let number): self.didSelectNumber(with: number)
+        case .decimal: self.didSelectDecimal()
         }
         self.updateViews?()
     }
     
-    private func didSelectNumber(number: Int) {
-        if self.currentNumber == .firstNumber {
-            if let firstNumber = self.firstNumber {
-                
-                var firstNumberString = firstNumber.description
-                firstNumberString.append(number.description)
-                self.firstNumber = firstNumberString
-                self.previousResult = firstNumberString
-                
-            } else {
-                self.firstNumber = String(number)
-                self.previousResult = String(number)
-            }
-            
-        } else {
-            if let secondNumber = self.secondNumber {
-                var secondNumberString = secondNumber.description
-                secondNumberString.append(number.description)
-                self.secondNumber = secondNumberString
-                self.previousResult = secondNumberString
-            } else {
-                self.secondNumber = String(number)
-                self.previousResult = String(number)
-            }
-        }
-    }
-    
-    private func didSelectOperation(operation: CalculatorOperation) {
-        if self.currentNumber == .firstNumber {
-            self.operation = operation
-            self.currentNumber = .secondNumber
-            
-        } else if self.currentNumber == .secondNumber {
-            
-            if let previousOperation = self.operation,
-                let firstNumber = Double(self.firstNumber ?? "0"),
-                let secondNumber = Double(self.secondNumber ?? "0")
-            {
-                let result = self.getOperationResult(
-                    previousOperation,
-                    firstNumber,
-                    secondNumber
-                )
-                let resultString = eitherNumberIsDecimal ? result.description : Int(result).description
-            
-                self.secondNumber = nil
-                self.firstNumber = resultString
-                self.currentNumber = .secondNumber
-                self.operation = operation
-            } else {
-                    // Else switch operation
-                self.operation = operation
-            }
-        }
-    }
-    
-    private func getOperationResult(_ operation: CalculatorOperation, _ firstNumber: Double, _ secondNumber: Double) -> Double {
-        
-        let result: Double
-        
-        switch operation {
-        case .divide:
-            result = firstNumber / secondNumber
-        case .multiply:
-            result = firstNumber * secondNumber
-        case .minus:
-            result = firstNumber - secondNumber
-        case .plus:
-            result = firstNumber + secondNumber
-        }
-        
-        return result
-    }
-    
     private func didSelectAllClear() {
-        self.resultLabel = "0"
+        self.calcHeaderLabel = "0"
         self.currentNumber = .firstNumber
         self.firstNumber = nil
         self.secondNumber = nil
         self.operation = nil
         self.firstNumberIsDecimal = false
         self.secondNumberIsDecimal = false
-        self.previousResult = nil
-        self.previousOperation = nil
+        self.prevNumber = nil
+        self.prevOperation = nil
     }
+}
+
+// MARK: - Selecting Numbers
+extension CalculatorViewControllerViewModel {
+    
+    private func didSelectNumber(with number: Int) {
+        
+        if self.currentNumber == .firstNumber {
+            
+            if var firstNumber = self.firstNumber {
+                
+                firstNumber.append(number.description)
+                self.firstNumber = firstNumber
+                self.prevNumber = firstNumber
+                
+            } else {
+                self.firstNumber = number.description
+                self.prevNumber = number.description
+            }
+            
+        } else {
+            if var secondNumber = self.secondNumber {
+                
+                secondNumber.append(number.description)
+                self.secondNumber = secondNumber
+                self.prevNumber = secondNumber
+                
+            } else {
+                self.secondNumber = number.description
+                self.prevNumber = number.description
+            }
+        }
+    }
+}
+
+// MARK: - Equals & Arithmetic Operations
+extension CalculatorViewControllerViewModel {
     
     private func didSelectEqualsButton() {
+        
         if let operation = self.operation,
-           let firstNumber = Double(self.firstNumber ?? "0"),
-           let secondNumber = Double(self.secondNumber ?? "0") {
+           let firstNumber = self.firstNumber?.toDouble,
+           let secondNumber = self.secondNumber?.toDouble {
+            let result = self.getOperationResult(operation, firstNumber, secondNumber)
+            let resultString = self.eitherNumberIsDecimal ? result.description : result.toInt?.description
             
-            let result = self.getOperationResult(
-                operation,
-                firstNumber,
-                secondNumber
-            )
-            let resultString = eitherNumberIsDecimal ? result.description : Int(result).description
             self.secondNumber = nil
-            self.previousOperation = operation
+            self.prevOperation = operation
             self.operation = nil
             self.firstNumber = resultString
             self.currentNumber = .firstNumber
         }
-        else if let previousOperation = self.previousOperation,
-                let firstNumber = Double(self.firstNumber ?? "0"),
-                let previousResult = Double(self.previousResult ?? "0") {
-            let result = self.getOperationResult(
-                previousOperation,
-                firstNumber,
-                previousResult
-            )
-            let resultString = eitherNumberIsDecimal ? result.description : Int(result).description
+        else if let prevOperation = self.prevOperation,
+                let firstNumber = self.firstNumber?.toDouble,
+                let prevNumber = self.prevNumber?.toDouble {
+                let result = self.getOperationResult(prevOperation, firstNumber, prevNumber)
+            let resultString = self.eitherNumberIsDecimal ? result.description : result.toInt?.description
+            
             self.firstNumber = resultString
         }
     }
     
-    private func didSelectPlusMinus() {
+    
+    private func didSelectOperation(with operation: CalculatorOperation) {
+        if self.currentNumber == .firstNumber {
+            self.operation = operation
+            self.currentNumber = .secondNumber
+            
+        } else if self.currentNumber == .secondNumber {
+            
+            if let prevOperation = self.operation,
+               let firstNumber = self.firstNumber?.toDouble,
+               let secondNumber = self.secondNumber?.toDouble {
+                
+                let result = self.getOperationResult(prevOperation, firstNumber, secondNumber)
+                let resultString = self.eitherNumberIsDecimal ? result.description : result.toInt?.description
+                
+                self.secondNumber = nil
+                self.firstNumber = resultString
+                self.currentNumber = .secondNumber
+                self.operation = operation
+            } else {
+                self.operation = operation
+            }
+        }
+    }
+    
+        // MARK: - Helper
+    private func getOperationResult(_ operation: CalculatorOperation, _ firstNumber: Double?, _ secondNumber: Double?) -> Double {
+        guard let firstNumber = firstNumber, let secondNumber = secondNumber else { return 0 }
+        
+        switch operation {
+        case .divide:
+            return (firstNumber / secondNumber)
+            
+        case .multiply:
+            return (firstNumber * secondNumber)
+            
+        case .minus:
+            return (firstNumber - secondNumber)
+            
+        case .plus:
+            return (firstNumber + secondNumber)
+        }
+    }
+}
+
+    // MARK: - Action Buttons
+extension CalculatorViewControllerViewModel {
+    
+    private func didSelectPlusOrMinus() {
         if self.currentNumber == .firstNumber, var number = self.firstNumber {
             
             if number.contains("-") {
@@ -196,66 +194,86 @@ extension CalculatorViewControllerViewModel {
                 number.insert("-", at: number.startIndex)
             }
             
-            self.firstNumber = String(number)
-            self.previousResult = String(number)
-        } else if self.currentNumber == .secondNumber, var number = secondNumber {
+            self.firstNumber = number
+            self.prevNumber = number
+            
+        } else if self.currentNumber == .secondNumber, var number = self.secondNumber {
+            
             if number.contains("-") {
                 number.removeFirst()
             } else {
                 number.insert("-", at: number.startIndex)
             }
             
-            self.secondNumber = String(number)
-            self.previousResult = String(number)
+            self.secondNumber = number
+            self.prevNumber = number
         }
     }
     
     private func didSelectPercentage() {
-        if self.currentNumber == .firstNumber, var number = Double(self.firstNumber!) {
+        if self.currentNumber == .firstNumber, var number = self.firstNumber?.toDouble {
             
             number /= 100
-            self.firstNumber = String(number)
-            self.previousResult = String(number)
+            
+            if number.isInteger {
+                self.firstNumber = number.toInt?.description
+            } else {
+                self.firstNumber = number.description
+                self.firstNumberIsDecimal = true
+            }
+            
         }
-        else if self.currentNumber == .secondNumber, var number = Double(secondNumber!) {
+        else if self.currentNumber == .secondNumber, var number = self.secondNumber?.toDouble {
             
             number /= 100
-            self.secondNumber = String(number)
-            self.previousResult = String(number)
+            
+            if number.isInteger {
+                self.secondNumber = number.toInt?.description
+            } else {
+                self.secondNumber = number.description
+                self.secondNumberIsDecimal = true
+            }
+            
         }
     }
     
     private func didSelectDecimal() {
+        
         if self.currentNumber == .firstNumber {
-            if !firstNumberIsDecimal, let firstNumber = self.firstNumber {
-                var firstNumberString = firstNumber
-                firstNumberString.append(".")
-                self.firstNumber = firstNumberString
-                firstNumberIsDecimal = true
+            
+            self.firstNumberIsDecimal = true
+            
+            if let firstNumber = self.firstNumber, !firstNumber.contains(".") {
+                self.firstNumber = firstNumber.appending(".")
             } else if self.firstNumber == nil {
                 self.firstNumber = "0."
-                firstNumberIsDecimal = true
             }
+            
         } else if self.currentNumber == .secondNumber {
-            if !secondNumberIsDecimal, let secondNumber = self.secondNumber {
-                var secondNumberString = secondNumber
-                secondNumberString.append(".")
-                self.secondNumber = secondNumberString
-                secondNumberIsDecimal = true
+            
+            self.secondNumberIsDecimal = true
+            
+            if let secondNumber = self.secondNumber, !secondNumber.contains(".") {
+                self.secondNumber = secondNumber.appending(".")
             } else if self.secondNumber == nil {
                 self.secondNumber = "0."
-                secondNumberIsDecimal = true
             }
         }
     }
-    
-    private func formatNumberToScientificNotation(_ numberString: String) -> String {
-        if let number = Double(numberString) {
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .scientific
-            numberFormatter.positiveFormat = "0.###E+0"
-            return numberFormatter.string(from: NSNumber(value: number)) ?? numberString
-        }
-        return numberString
+}
+
+extension Double {
+    var toInt: Int? {
+        return Int(self)
     }
+}
+
+extension String {
+    var toDouble: Double? {
+        return Double(self)
+    }
+}
+
+extension FloatingPoint {
+    var isInteger: Bool { return rounded() == self }
 }

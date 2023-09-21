@@ -87,7 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				6F689C3B2AB74D35000D25CD /* ButtonCollectionViewCell.swift */,
-				6FEEE5582AB9DF1E002D09D9 /* CalculatorOperations.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -95,6 +94,7 @@
 		6F689C362AB71369000D25CD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6FEEE5582AB9DF1E002D09D9 /* CalculatorOperations.swift */,
 				6F689C372AB732FC000D25CD /* Buttons.swift */,
 			);
 			path = Models;

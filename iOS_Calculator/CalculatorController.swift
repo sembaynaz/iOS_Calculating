@@ -70,7 +70,7 @@ class CalculatorController: UIViewController {
         self.viewModel.updateViews = { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 self?.collectionView.reloadData()
-                self?.resultLabel.text = self!.viewModel.resultLabel
+                self?.resultLabel.text = self!.viewModel.calcHeaderLabel
             }
         }
     }
@@ -110,14 +110,14 @@ class CalculatorController: UIViewController {
         
 extension CalculatorController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.buttonsArray.count
+        return viewModel.calcButtonCells.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: ButtonCollectionViewCell.identifier,
             for: indexPath) as! ButtonCollectionViewCell
-        let calcButton = self.viewModel.buttonsArray[indexPath.row]
+        let calcButton = self.viewModel.calcButtonCells[indexPath.row]
         cell.configure(button: calcButton)
         
         if let operation = self.viewModel.operation, self.viewModel.secondNumber == nil {
@@ -130,9 +130,9 @@ extension CalculatorController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let calcButton = viewModel.buttonsArray[indexPath.row]
+        let calcButton = viewModel.calcButtonCells[indexPath.row]
         
-        let screenWidth = UIScreen.main.bounds.width
+        let screenWidth = UIScreen.main.bounds.width 
         
         switch calcButton {
         case let .numbers(int) where int == 0:
@@ -153,7 +153,7 @@ extension CalculatorController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let buttonCell = self.viewModel.buttonsArray[indexPath.row]
-        viewModel.didSelectButton(calcButton: buttonCell)
+        let buttonCell = self.viewModel.calcButtonCells[indexPath.row]
+        viewModel.didSelectButton(with: buttonCell)
     }
 }
